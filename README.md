@@ -16,8 +16,9 @@ Steps to check and add your own products, you will need to replace the populate.
 4. in ' .env ' set a variable MONGO_URI with your mongo connection string
 5. run the populate.js using 'node populate.js', once you see success message, the data is added.
 
-You can look for the products on '/api/v1/products' for all products //// all products
-products?name / company / featured //// search by name company featured
-products?sort=name,company,featured /// sort by name company featured
-products?select=name,createdAt /// display selected fields
-products?numericFilters=rating>4,price<30 // sort by rating greater than and price less than
+You can look for the products on:
+1. '/api/v1/products' for all products //// all products
+2. products?name / company / featured //// search by name company featured
+3. products?sort=name,company,featured /// sort by name company featured
+4. products?select=name,createdAt /// display selected fields
+5. products?numericFilters=rating>4,price<30 // sort by rating greater than and price less than
