@@ -6,8 +6,31 @@ const getAllProductsStatic = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-    const { featured, rating, name, price, company, sort, select } = req.query;
+    const { featured, name, company, sort, select, numericFilters } = req.query;
     const queryObject = {};
+
+    if (numericFilters) {
+        const operatorMap = {
+            '>': '$gt',
+            '>=': '$gte',
+            '=': '$eq',
+            '<': '$lt',
+            '<=': '$lte',
+        };
+        const regex = /\b(>|>=|=|<|<=)\b/g;
+        let filters = numericFilters.replace(
+            regex,
+            (match) => `-${operatorMap[match]}-`
+        );
+        const options = ['price', 'rating'];
+        filters = filters.split(',').forEach((item) => {
+            const [field, operator, value] = item.split('-');
+            if (options.includes(field)) {
+                queryObject[field] = { [operator]: Number(value) };
+            }
+        });
+        console.log(numericFilters, filters);
+    }
     if (featured) {
         queryObject.featured = featured === 'true' ? true : false;
     }
@@ -44,6 +67,8 @@ const getAllProducts = async (req, res) => {
     //23 products
     // (1-1) * 10 = 0 (skip 0 items) 1 page
     //(2-1) * 10 = 10 (skip 10 items) 2 page
+
+    //sorting with numeric, price numbers
 
     const products = await result; // we wait for finding and sorting
 
